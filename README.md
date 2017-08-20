@@ -13,7 +13,9 @@ $ racket reaction-time.rkt
 の後、start ボタン、タイマー表示が回り始めるやいなや stop ボタンを押す。
 タイマー回り始めてからボタン押すまでの時間を msec 単位で表示します。
 
-start 押してからタイマー回るまでは (+ 1 (* 3 (random))) でスリープします。
+start 押してからタイマー回るまでは
+`(+ 1 (* 3 (random)))`
+でスリープします。
 
 
 ## TODO
@@ -21,11 +23,11 @@ start 押してからタイマー回るまでは (+ 1 (* 3 (random))) でスリ�
 * play sound
   音の鳴り出しが遅れるみたいで、アプリの目的に沿わない。やめ。
 
-* pad zero
+* [done] pad zero
   1000 で割らずに、そのママ msec 値を表示する。
 
-* cancel exam when go clicked too early.
-  let/cc の出番か？
+* [done] cancel exam when go clicked too early.
+  let/cc の出番か？ 伝統的なフラグで対応。ダサい。
 
 * display records
 
