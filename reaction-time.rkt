@@ -1,7 +1,6 @@
 #lang racket
 (require racket/gui/base)
 
-(define thd (thread (λ () (sleep 1))))
 
 (define modern-font (make-object font% 64.0 'modern))
 
@@ -21,22 +20,29 @@
 
 (define panel (new horizontal-panel% [parent frame]))
 
+(define thd (thread (λ () (sleep 1))))
+(define cancel? 0)
+
 (new button% [parent panel]
      [label "start"]
      [callback
       (λ (btn evt)
-        (let* ((void (send text-field set-value "Ready..."))
-               (wait-for (sleep/yield (+ 1 (* 3 (random)))))
-               (start-at (current-milliseconds)))
+        (let ((start-at 0))
           (when (thread-running? thd) (thread-suspend thd))
-          (set! thd (thread
-            (λ ()
-              (let loop ()
-                (send text-field set-value
-                      (number->string
-                       (- (current-milliseconds) start-at)))
-                (sleep/yield 0.01)
-                (loop)))))))])
+          (send text-field set-value "ready...")
+          (set! cancel? #f)
+          (sleep/yield (+ 1 (* 3 (random))))
+          (set! start-at (current-milliseconds))
+          (if cancel?
+              (set! cancel? #f)
+              (set! thd (thread
+                         (λ ()
+                           (let loop ()
+                             (send text-field set-value
+                                   (number->string
+                                    (- (current-milliseconds) start-at)))
+                             (sleep/yield 0.01)
+                             (loop))))))))])
 
 (new button% [parent panel]
      [label "stop"]
@@ -45,6 +51,9 @@
         (if (thread-running? thd)
             (thread-suspend thd)
             (begin
-              (send text-field set-value "too early"))))])
+              ; must cancel the last start.
+              (set! cancel? #t)
+              (send text-field set-value "too early")
+              )))])
 
 (send frame show #t)
