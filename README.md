@@ -1,10 +1,20 @@
 # reaction-time
 
-Timer starts random seconds after clicking set button.
-To stop the timer, click go button. Displays the reaction time.
+人間のリアクション時間は 100 msec 以下にはならんと陸上競技の人はいう。
+本当か？そうじゃないアスリートが出てきたらどうすんの？
+時代を遡って記録を認めることはできねーだろ。
 
-The reaction time of human being is not less than 100msec, the
-track and field officials say. Is it true?
+## USAGE
+
+```sh
+$ racket reaction-time.rkt
+```
+
+の後、start ボタン、タイマー表示が回り始めるやいなや stop ボタンを押す。
+タイマー回り始めてからボタン押すまでの時間を msec 単位で表示します。
+
+start 押してからタイマー回るまでは (+ 1 (* 3 (random))) でスリープします。
+
 
 ## TODO
 
