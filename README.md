@@ -15,6 +15,9 @@ track and field officials say. Is it true?
   1000 で割らずに、そのママ msec 値を表示する。
 
 * cancel exam when go clicked too early.
-  
+  let/cc の出番か？
+
+* display records
+
 ---
 hkimura, 2017-08-20.
