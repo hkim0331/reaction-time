@@ -21,7 +21,7 @@
 (define panel (new horizontal-panel% [parent frame]))
 
 (define thd (thread (λ () (sleep 1))))
-(define cancel? 0)
+(define stop? #f)
 
 (new button% [parent panel]
      [label "start"]
@@ -30,19 +30,19 @@
         (let ((start-at 0))
           (when (thread-running? thd) (thread-suspend thd))
           (send text-field set-value "ready...")
-          (set! cancel? #f)
+          (set! stop? #f)
           (sleep/yield (+ 1 (* 3 (random))))
           (set! start-at (current-milliseconds))
-          (if cancel?
-              (set! cancel? #f)
-              (set! thd (thread
-                         (λ ()
-                           (let loop ()
-                             (send text-field set-value
-                                   (number->string
-                                    (- (current-milliseconds) start-at)))
-                             (sleep/yield 0.01)
-                             (loop))))))))])
+          (unless stop?
+            (set! thd
+                (thread
+                 (λ ()
+                   (let loop ()
+                     (send text-field set-value
+                           (number->string
+                            (- (current-milliseconds) start-at)))
+                     (sleep/yield 0.01)
+                     (loop))))))))])
 
 (new button% [parent panel]
      [label "stop"]
@@ -50,10 +50,7 @@
       (λ (btn evt)
         (if (thread-running? thd)
             (thread-suspend thd)
-            (begin
-              ; must cancel the last start.
-              (set! cancel? #t)
-              (send text-field set-value "too early")
-              )))])
+            (send text-field set-value "too early"))
+        (set! stop? #t))])
 
 (send frame show #t)
