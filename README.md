@@ -15,19 +15,23 @@ $ racket reaction-time.rkt
 
 start 押してからタイマー回るまでは
 `(+ 1 (* 3 (random)))`
-でスリープします。
+でランダムにスリープします。
 
 
 ## TODO
 
 * play sound
+
   音の鳴り出しが遅れるみたいで、アプリの目的に沿わない。やめ。
 
 * [done] pad zero
+
   1000 で割らずに、そのママ msec 値を表示する。
 
 * [done] cancel exam when go clicked too early.
-  let/cc の出番か？ 伝統的なフラグで対応。ダサい。
+
+  let/cc の出番か？
+  伝統的なフラグで対応。ダサい。
 
 * display records
 
